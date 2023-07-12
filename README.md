@@ -11,26 +11,19 @@ In short, the shortcut is intercepted by GNOME, and translated by the server. Fo
 # Installation
 
 - `cargo build --release`
-- `sudo ln -s $(realpath target/release/server) /usr/bin/unikey-server`
-- `sudo ln -s $(realpath target/release/client) /usr/bin/unikey-client`
+- `sudo ln -s $(realpath target/release/server) /usr/local/bin/unikey-server`
+- `sudo ln -s $(realpath target/release/client) /usr/local/bin/unikey-client`
 
-Now create a user systemd service for the server:
-
-```service
-[Unit]
-Description=the unikey server that executes key presses according to the app
-
-[Service]
-Type=simple
-StandardOutput=journal
-ExecStart=unikey-server
-
-[Install]
-WantedBy=default.target
+Now create a desktop entry for the server at `$HOME/.config/autostart/unikey.desktop`
+```desktop
+[Desktop Entry]
+Name=Unikey
+Comment=the unikey server that executes key presses according to the app
+Exec=unikey-server
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
 ```
-
-- `systemctl --user enable unikey.service`
-- `systemctl --user start unikey.service`
 
 Now in GNOME settings, register each hotkey like this:
 
