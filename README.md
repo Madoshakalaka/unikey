@@ -11,7 +11,7 @@ In short, the shortcut is intercepted by GNOME, and translated by the server. Fo
 # Installation
 
 - `cargo build --release`
-- `sudo ln -s $(realpath target/release/server) /usr/bin/unikey-server` (the server 
+- `sudo ln -s $(realpath target/release/server) /usr/bin/unikey-server`
 - `sudo ln -s $(realpath target/release/client) /usr/bin/unikey-client`
 
 Now create a user systemd service for the server:
