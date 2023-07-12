@@ -218,8 +218,8 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
 
     let combos = match message.as_str() {
         "ctrl u" => {
-            if let Ok((class, _instance, window)) = l.lookup() {
-                if class == "neovide" || window == "/usr/bin/nvim" {
+            if let Ok((class, instance, window)) = l.lookup() {
+                if class == "neovide" || window == "/usr/bin/nvim" || (class == "Gnome-terminal" && instance == "gnome-terminal-server" && window=="python"){
                     vec![(KeyButMask::CONTROL, 30)]
                 } else {
                     vec![(KeyButMask::SHIFT, 110), (Default::default(), 22)]
