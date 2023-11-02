@@ -1,6 +1,7 @@
 use notify_rust::{Notification, Timeout};
 use std::io::prelude::*;
 use std::os::unix::net::{UnixListener, UnixStream};
+use std::process::Command;
 use x11rb::protocol::xproto::KeyButMask;
 
 use anyhow::{Context, Result};
@@ -234,6 +235,9 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
         "ctrl [" => {
             vec![(Default::default(), 9)]
         }
+        "ctrl ;" => {
+            vec![(Default::default(), 9)]
+        }
         "ctrl w" => {
             if let Ok((class, instance, window)) = l.lookup() {
                 if class == "neovide" || window == "/usr/bin/nvim" || (class == "Gnome-terminal" && instance == "gnome-terminal-server") {
@@ -260,6 +264,30 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
             } else {
                 println!("failed to get active window");
             };
+            vec![]
+        }
+        "super q" => {
+            Command::new("ibus")
+                    .arg("engine")
+                    .arg("xkb:us::eng")
+                    .spawn()
+                    .expect("ibus command failed to start");
+            vec![]
+        }
+        "super w" => {
+            Command::new("ibus")
+                    .arg("engine")
+                    .arg("libpinyin")
+                    .spawn()
+                    .expect("ibus command failed to start");
+            vec![]
+        }
+        "super e" => {
+            Command::new("ibus")
+                    .arg("engine")
+                    .arg("anthy")
+                    .spawn()
+                    .expect("ibus command failed to start");
             vec![]
         }
         _ => {
