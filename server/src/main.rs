@@ -217,6 +217,8 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
         .read_to_string(&mut message)
         .context("Failed at reading the unix stream")?;
 
+    // keycodes: see here
+    // https://chromium.googlesource.com/chromium/src.git/+/39.0.2164.0/ui/events/keycodes/keyboard_code_conversion_x.cc#882
     let combos = match message.as_str() {
         "ctrl u" => {
             if let Ok((class, instance, window)) = l.lookup() {
@@ -232,6 +234,13 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
         "ctrl h" => {
             vec![(Default::default(), 22)]
         }
+        "ctrl p" => {
+            vec![(Default::default(), 0x6f)]
+        }
+        "ctrl n" => {
+            vec![(Default::default(), 0x74)]
+        }
+        
         "ctrl [" => {
             vec![(Default::default(), 9)]
         }

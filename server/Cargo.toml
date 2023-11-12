@@ -10,3 +10,13 @@ common = { version = "0.1.0", path = "../common" }
 anyhow = "1.0.71"
 x11rb = "0.12.0"
 notify-rust = "4.8.0"
+image = "0.24.7"
+dlib-face-recognition = { version = "0.3.2", features=["embed-all"]}
+log = "0.4.20"
+env_logger = "0.10.0"
+
+[dependencies.nokhwa]
+git = "https://github.com/l1npengtul/nokhwa.git"
+branch = "0.10"
+# Use the native input backends, enable WGPU integration
+features = ["input-native", "output-threaded"]

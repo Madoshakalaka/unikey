@@ -5,4 +5,8 @@ members = [
     "client",
     "common",
 ]
+resolver = "2"
 
+[profile.release]
+# lto seems not have an impact on the detection time and lengthens the build time significantly
+# lto=true
