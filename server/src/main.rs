@@ -222,7 +222,12 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
     let combos = match message.as_str() {
         "ctrl u" => {
             if let Ok((class, instance, window)) = l.lookup() {
-                if class == "neovide" || window == "/usr/bin/nvim" || (class == "Gnome-terminal" && instance == "gnome-terminal-server" && window=="python"){
+                if class == "neovide"
+                    || window == "/usr/bin/nvim"
+                    || (class == "Gnome-terminal"
+                        && instance == "gnome-terminal-server"
+                        && window == "python")
+                {
                     vec![(KeyButMask::CONTROL, 30)]
                 } else {
                     vec![(KeyButMask::SHIFT, 110), (Default::default(), 22)]
@@ -232,7 +237,21 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
             }
         }
         "ctrl h" => {
-            vec![(Default::default(), 22)]
+            if let Ok((_class, _instance, _window)) = l.lookup() {
+                vec![(Default::default(), 22)]
+            } else {
+                Command::new("xdotool")
+                    .arg("key")
+                    .arg("--clearmodifiers")
+                    .arg("--delay")
+                    .arg("0")
+                    .arg("BackSpace")
+                    .spawn()
+                    .expect("ibus command failed to start")
+                    .wait()
+                    .ok();
+                vec![]
+            }
         }
         "ctrl p" => {
             vec![(Default::default(), 0x6f)]
@@ -240,22 +259,48 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
         "ctrl n" => {
             vec![(Default::default(), 0x74)]
         }
-        
+
         "ctrl [" => {
             vec![(Default::default(), 9)]
         }
         "ctrl ;" => {
-            vec![(Default::default(), 9)]
+            if let Ok((_class, _instance, _window)) = l.lookup() {
+                vec![(Default::default(), 9)]
+            } else {
+                Command::new("xdotool")
+                    .arg("key")
+                    .arg("--clearmodifiers")
+                    .arg("--delay")
+                    .arg("0")
+                    .arg("Escape")
+                    .spawn()
+                    .expect("ibus command failed to start")
+                    .wait()
+                    .ok();
+                vec![]
+            }
         }
         "ctrl w" => {
             if let Ok((class, instance, window)) = l.lookup() {
-                if class == "neovide" || window == "/usr/bin/nvim" || (class == "Gnome-terminal" && instance == "gnome-terminal-server") {
+                if class == "neovide"
+                    || window == "/usr/bin/nvim"
+                    || (class == "Gnome-terminal" && instance == "gnome-terminal-server")
+                {
                     vec![(KeyButMask::CONTROL, 25)]
                 } else {
                     vec![(KeyButMask::CONTROL, 22)]
                 }
             } else {
-                vec![(KeyButMask::CONTROL, 25)]
+                Command::new("xdotool")
+                    .arg("key")
+                    .arg("--delay")
+                    .arg("0")
+                    .arg("ctrl+BackSpace")
+                    .spawn()
+                    .expect("xdotool command failed to start")
+                    .wait()
+                    .ok();
+                vec![]
             }
         }
         "ctrl ins" => {
@@ -277,26 +322,33 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
         }
         "super q" => {
             Command::new("ibus")
-                    .arg("engine")
-                    .arg("xkb:us::eng")
-                    .spawn()
-                    .expect("ibus command failed to start");
+                .arg("engine")
+                .arg("xkb:us::eng")
+                .spawn()
+                .expect("ibus command failed to start")
+                .wait()
+                .ok();
+
             vec![]
         }
         "super w" => {
             Command::new("ibus")
-                    .arg("engine")
-                    .arg("libpinyin")
-                    .spawn()
-                    .expect("ibus command failed to start");
+                .arg("engine")
+                .arg("libpinyin")
+                .spawn()
+                .expect("ibus command failed to start")
+                .wait()
+                .ok();
             vec![]
         }
         "super e" => {
             Command::new("ibus")
-                    .arg("engine")
-                    .arg("anthy")
-                    .spawn()
-                    .expect("ibus command failed to start");
+                .arg("engine")
+                .arg("anthy")
+                .spawn()
+                .expect("ibus command failed to start")
+                .wait()
+                .ok();
             vec![]
         }
         _ => {
