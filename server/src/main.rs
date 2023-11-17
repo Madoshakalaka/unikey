@@ -270,6 +270,40 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
                 vec![]
             }
         }
+        "ctrl e" => {
+            if let Ok((_class, _instance, _window)) = l.lookup() {
+                vec![(Default::default(), 0x73)]
+            } else {
+                Command::new("xdotool")
+                    .arg("key")
+                    // .arg("--clearmodifiers")
+                    .arg("--delay")
+                    .arg("0")
+                    .arg("End")
+                    .spawn()
+                    .expect("ibus command failed to start")
+                    .wait()
+                    .ok();
+                vec![]
+            }
+        }
+        "ctrl a" => {
+            if let Ok((_class, _instance, _window)) = l.lookup() {
+                vec![(Default::default(), 0x6e)]
+            } else {
+                Command::new("xdotool")
+                    .arg("key")
+                    // .arg("--clearmodifiers")
+                    .arg("--delay")
+                    .arg("0")
+                    .arg("Home")
+                    .spawn()
+                    .expect("ibus command failed to start")
+                    .wait()
+                    .ok();
+                vec![]
+            }
+        }
         "ctrl n" => {
             if let Ok((_class, _instance, _window)) = l.lookup() {
                 vec![(Default::default(), 0x74)]
