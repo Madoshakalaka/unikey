@@ -236,7 +236,7 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
                 vec![(KeyButMask::CONTROL, 30)]
             }
         }
-        "ctrl h" => {
+        "ctrl j" => {
             if let Ok((_class, _instance, _window)) = l.lookup() {
                 vec![(Default::default(), 22)]
             } else {
@@ -263,40 +263,6 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
                     .arg("--delay")
                     .arg("0")
                     .arg("Up")
-                    .spawn()
-                    .expect("ibus command failed to start")
-                    .wait()
-                    .ok();
-                vec![]
-            }
-        }
-        "ctrl e" => {
-            if let Ok((_class, _instance, _window)) = l.lookup() {
-                vec![(Default::default(), 0x73)]
-            } else {
-                Command::new("xdotool")
-                    .arg("key")
-                    // .arg("--clearmodifiers")
-                    .arg("--delay")
-                    .arg("0")
-                    .arg("End")
-                    .spawn()
-                    .expect("ibus command failed to start")
-                    .wait()
-                    .ok();
-                vec![]
-            }
-        }
-        "ctrl a" => {
-            if let Ok((_class, _instance, _window)) = l.lookup() {
-                vec![(Default::default(), 0x6e)]
-            } else {
-                Command::new("xdotool")
-                    .arg("key")
-                    // .arg("--clearmodifiers")
-                    .arg("--delay")
-                    .arg("0")
-                    .arg("Home")
                     .spawn()
                     .expect("ibus command failed to start")
                     .wait()
@@ -382,7 +348,7 @@ fn handle_stream(mut unix_stream: UnixStream, l: &ActiveWindowLookupper) -> Resu
             };
             vec![]
         }
-        "super q" => {
+        "super a" => {
             Command::new("ibus")
                 .arg("engine")
                 .arg("xkb:us::eng")
